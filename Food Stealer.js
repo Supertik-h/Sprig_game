@@ -1,11 +1,18 @@
 /*
-First time? Check out the tutorial game:
-https://sprig.hackclub.com/gallery/getting_started
+
 
 @title: Food Stealer
-@author: 
+@author: Julia Nadolska
 @tags: []
 @addedOn: 2024-00-00
+
+RULES
+You can move using 'WSAD'
+You can reset level by clicking 'j'
+
+PLOT
+You decided to stay fit and eat clean. Unfortunately someone just have stolen your fruits.
+Try to find them, avoiding fast foods.
 */
 
 const player = "p"
@@ -20,6 +27,10 @@ const orange = "o"
 const kiwi = "k"
 const coconut = "c"
 const strawberry = "s"
+const wall = "q"
+const fries = "f"
+const door = "d"
+const burger = "r"
 
 setLegend(
   [ player, bitmap`
@@ -226,6 +237,74 @@ setLegend(
 .......33.......
 ................
 ................`],
+  [ wall, bitmap`
+1111111111111111
+1LLLLLLLLLLLLLL1
+1L111111111111L1
+1L111111111111L1
+1L111111111111L1
+1L111LLLLLL111L1
+1L111LLLLLL111L1
+1L111LLLLLL111L1
+1L111LLLLLL111L1
+1L111LLLLLL111L1
+1L111LLLLLL111L1
+1L111111111111L1
+1L111111111111L1
+1L111111111111L1
+1LLLLLLLLLLLLLL1
+1111111111111111`],
+  [ fries, bitmap`
+................
+................
+................
+.......6.6......
+......6666.6....
+.....6666666....
+......66666.....
+......33333.....
+......33333.....
+......33333.....
+......33333.....
+......33333.....
+................
+................
+................
+................`],
+  [ door, bitmap`
+1CCCCCCCCCCCCCC1
+1CCCCCCCCCCCCCC1
+1CCCCCCCCCCCCCC1
+1CCCCCCCCCCCCCC1
+1CCCCCCCCCCCCCC1
+1CCCCCCCCCCCCCC1
+1CCCCCCCCCCCCCC1
+1CCCCCCCCCCCCCC1
+1CC666CCCCCCCCC1
+1CCCC6CCCCCCCCC1
+1CCCC6CCCCCCCCC1
+1CCCCCCCCCCCCCC1
+1CCCCCCCCCCCCCC1
+1CCCCCCCCCCCCCC1
+1CCCCCCCCCCCCCC1
+1CCCCCCCCCCCCCC1`],
+  [ burger, bitmap`
+................
+................
+................
+................
+................
+................
+.....9999999....
+.....9224429....
+.....3234323....
+.....2266626....
+.....9CCCCC9....
+.....9999999....
+................
+................
+................
+................`],
   
   
   
@@ -233,16 +312,30 @@ setLegend(
   
 )
 
-setSolids([])
+setSolids([wall, player])
+var score  = 0
+addText(`Score: ${score}`,{x: 10, y: 0, color: color`5`})
 
 let level = 0
 const levels = [
   map`
-.....
-.s.l.
-wbic.
-pogk.
-a...e`
+p.q.....
+..q.qq.k
+.fq.rq..
+.....q..
+...q.qdq
+qq.q.q..
+w..q.q.a
+...q...f`,
+  map`
+pq......
+.q.qqqq.
+.s.q..f.
+qqqqe.q.
+..r...q.
+qdq.qqq.
+..q...k.
+g...qqqq`
 ]
 /*const grass = [bitmap`
 4444444444444444
@@ -283,6 +376,13 @@ onInput("a", () => {
   getFirst(player).x -= 1
 })
 
+onInput("j", () => {
+  setMap(levels[level])
+})
+
 afterInput(() => {
+  
+    
+  
   
 })
