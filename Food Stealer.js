@@ -8,11 +8,12 @@
 
 RULES
 You can move using 'WSAD'
-You can reset level by clicking 'j'
+You can reset level by clicking 'j' or reset the whole game by clickin 'i'
+
 
 PLOT
 You decided to stay fit and eat clean. Unfortunately someone just have stolen your fruits.
-Try to find them, avoiding fast foods.
+Try to find them, avoiding fast foods. Renember to get rid of the cake.
 */
 
 const player = "p"
@@ -314,11 +315,11 @@ setLegend(
 4D4DDDDDDDDDD4D4
 4D4D44444444D4D4
 4D4D4DDDDDD4D4D4
-4D4D4D4444D4D4D4
-4D4D4D4DD4D4D4D4
-4D4D4D4DD4D4D4D4
-4D4D4D4444D4D4D4
-4D4D4DDDDDD4D4D4
+4D000D404404D0D4
+4D0D0D40D400D0D4
+4D004D40D40400D4
+4D0D0D404404D0D4
+4D000DD0DD04D0D4
 4D4D44444444D4D4
 4D4DDDDDDDDDD4D4
 4D444444444444D4
@@ -348,7 +349,7 @@ setLegend(
   
 )
 
-setSolids([wall, player, cake])
+setSolids([wall, player, cake, door])
 var score  = 0
 addText(`Score: ${score}`,{x: 10, y: 0, color: color`5`})
 
@@ -364,14 +365,48 @@ qq.q.q..
 a..q.q.a
 ...q...f`,
   map`
-pq......
-.q.qqqq.
-.s.q..f.
-qqqqe.q.
-..r...q.
-qdq.qqq.
-..q...k.
-g...qqqq`
+z.......
+.qfq..q.
+...q....
+..aq..f.
+.qdq.aqq
+.a...@p.
+..qqq...
+..f.....`,
+  map`
+....a....
+.q....q..
+.fzq..qq.
+.qqf...q.
+.q.@...q.
+.qpqq.a..
+.qdq...q.
+...qf.q..
+aqqq.....`,
+  map`
+q..qqqqqqaf
+q..........
+q.qqqqqqq..
+q.q.....q.q
+q.q.q.q.q.q
+q.q.q.q.q.q
+q.q.qaq.q.q
+q.qpq.qaq.q
+..qqq.qdq.q
+a..zq.@....
+qqqqqqqq..f`,
+  map`
+a...q......
+..q.qqq.qdq
+..q...q..q.
+qqq..fqq...
+z.qq.a...q.
+.f.qqqq.qa.
+.q.qqf...q.
+....q.....q
+.q.....p@.f
+...aqqqq.q.
+........qq.`
 ]
 /*const grass = [bitmap`
 4444444444444444
@@ -390,7 +425,7 @@ g...qqqq`
 4444444444444444
 4444444444444444
 4444444444444444`] */
-
+let levelNumber = 0
 setMap(levels[level])
 
 /*setBackground(grass) */
@@ -413,7 +448,11 @@ onInput("a", () => {
 })
 
 onInput("j", () => {
+  setMap(levels[levelNumber])
+})
+onInput("i", () => {
   setMap(levels[level])
+  
 })
 
 afterInput(() => {
@@ -422,6 +461,7 @@ afterInput(() => {
   let friess = getAll(fries)
   let cakee = getFirst(cake)
   let greeno = getFirst(green)
+  let dooro = getFirst(door)
   let counter = 0
   
   if(tilesWith(green, cake).length >= 1){
@@ -429,6 +469,15 @@ afterInput(() => {
     greeno.remove()
     counter = 1
     addText(`Door open!`,{x: 5, y: 6, color: color`H`})
+  }
+  if(counter == 1){
+    setSolids([wall, player, cake])
+  }
+  if(tilesWith(player, door).length >= 1){
+      levelNumber++
+      setMap(levels[levelNumber])
+      counter = 0
+      setSolids([wall, player, cake, door])
   }
   
   for(let i = 0; i < apples.length; i++){
