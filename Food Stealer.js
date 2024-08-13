@@ -31,6 +31,8 @@ const wall = "q"
 const fries = "f"
 const door = "d"
 const burger = "r"
+const green = "z"
+const cake = "@"
 
 setLegend(
   [ player, bitmap`
@@ -305,6 +307,40 @@ setLegend(
 ................
 ................
 ................`],
+  [ green, bitmap`
+4444444444444444
+4DDDDDDDDDDDDDD4
+4D444444444444D4
+4D4DDDDDDDDDD4D4
+4D4D44444444D4D4
+4D4D4DDDDDD4D4D4
+4D4D4D4444D4D4D4
+4D4D4D4DD4D4D4D4
+4D4D4D4DD4D4D4D4
+4D4D4D4444D4D4D4
+4D4D4DDDDDD4D4D4
+4D4D44444444D4D4
+4D4DDDDDDDDDD4D4
+4D444444444444D4
+4DDDDDDDDDDDDDD4
+4444444444444444`],
+  [ cake, bitmap`
+................
+................
+................
+................
+................
+................
+.....232222.....
+....22222322....
+...2232222232...
+...CC22CCCC2C...
+...CC2CCCCCCC...
+....CCCCCCCC....
+................
+................
+................
+................`],
   
   
   
@@ -312,7 +348,7 @@ setLegend(
   
 )
 
-setSolids([wall, player])
+setSolids([wall, player, cake])
 var score  = 0
 addText(`Score: ${score}`,{x: 10, y: 0, color: color`5`})
 
@@ -320,12 +356,12 @@ let level = 0
 const levels = [
   map`
 p.q.....
-..q.qq.k
-.fq.rq..
+@.q.qq..
+afq.fq..
 .....q..
-...q.qdq
+z..q.qdq
 qq.q.q..
-w..q.q.a
+a..q.q.a
 ...q...f`,
   map`
 pq......
@@ -360,7 +396,7 @@ setMap(levels[level])
 /*setBackground(grass) */
 
 setPushables({
-  [ player ]: []
+  [ player ]: [cake]
 })
 
 onInput("s", () => {
@@ -381,8 +417,37 @@ onInput("j", () => {
 })
 
 afterInput(() => {
+  let character = getFirst(player)
+  let apples = getAll(apple)
+  let friess = getAll(fries)
+  let cakee = getFirst(cake)
+  let greeno = getFirst(green)
+  let counter = 0
   
+  if(tilesWith(green, cake).length >= 1){
+    cakee.remove()
+    greeno.remove()
+    counter = 1
+    addText(`Door open!`,{x: 5, y: 6, color: color`H`})
+  }
+  
+  for(let i = 0; i < apples.length; i++){
+    if(character.x === apples[i].x && character.y === apples[i].y){
+      apples[i].remove()
+      score += 1;
+      clearText()
+      addText(`Score: ${score}`,{x: 10, y: 0, color: color`5`})
     
+    }
+  }
+
+  for(let i = 0; i <friess.length; i++){
+    if(character.x === friess[i].x && character.y === friess[i].y){
+      friess[i].remove()
+      score -=1
+      clearText()
+      addText(`Score: ${score}`,{x: 10, y: 0, color: color`5`})
+    }
+  }
   
-  
-})
+});
