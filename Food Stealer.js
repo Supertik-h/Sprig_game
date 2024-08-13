@@ -32,8 +32,48 @@ const wall = "q"
 const fries = "f"
 const door = "d"
 const burger = "r"
-const green = "z"
+const bin = "z"
 const cake = "@"
+const BackgroundSong = tune`
+500: A4~500 + C4^500 + D5/500,
+500: A4~500 + G4-500,
+500: C4^500 + A4~500 + D5/500,
+500: C4^500 + A4~500 + D5/500,
+500: A4~500 + D4-500,
+500: A4~500 + D4-500,
+500: C4^500 + A4~500 + C5/500,
+500: C4^500 + A4~500 + C5/500,
+500: C4^500 + A4~500 + C5/500,
+500: A4~500 + G4-500,
+500: A4~500 + G4-500,
+500: C4^500 + A4~500 + D5/500,
+500: C4^500 + A4~500 + D5/500,
+500: C4^500 + A4~500 + D5/500,
+500: A4~500 + D4-500,
+500: A4~500 + D4-500,
+500: C4^500 + A4~500 + E5/500,
+500: C4^500 + A4~500 + E5/500,
+500: C4^500 + A4~500 + E5/500,
+500: A4~500 + G4-500,
+500: A4~500 + G4-500,
+500: C4^500 + A4~500 + D5/500,
+500: C4^500 + A4~500 + D5/500,
+500: C4^500 + A4~500 + D5/500,
+500: A4~500 + D4-500,
+500: A4~500 + D4-500,
+500: C4^500 + A4~500 + C5/500,
+500: C4^500 + A4~500 + C5/500,
+500: C4^500 + A4~500 + C5/500,
+500: A4~500 + G4-500,
+500: A4~500 + G4-500,
+500: C4^500 + A4~500 + D5/500`
+const trash = tune`
+210.52631578947367,
+105.26315789473684: C5~105.26315789473684 + B4~105.26315789473684 + A4~105.26315789473684 + G4-105.26315789473684 + F4-105.26315789473684,
+105.26315789473684: G4^105.26315789473684 + B4^105.26315789473684 + A4^105.26315789473684 + F4-105.26315789473684,
+2947.368421052631` 
+
+playTune(BackgroundSong, Infinity)
 
 setLegend(
   [ player, bitmap`
@@ -308,23 +348,23 @@ setLegend(
 ................
 ................
 ................`],
-  [ green, bitmap`
-4444444444444444
-4DDDDDDDDDDDDDD4
-4D444444444444D4
-4D4DDDDDDDDDD4D4
-4D4D44444444D4D4
-4D4D4DDDDDD4D4D4
-4D000D404404D0D4
-4D0D0D40D400D0D4
-4D004D40D40400D4
-4D0D0D404404D0D4
-4D000DD0DD04D0D4
-4D4D44444444D4D4
-4D4DDDDDDDDDD4D4
-4D444444444444D4
-4DDDDDDDDDDDDDD4
-4444444444444444`],
+  [ bin, bitmap`
+DDD.............
+DD4D............
+4DDD............
+DDDD............
+D4DD.8005307....
+DDDD6D0DDD077...
+.DDDD004DD0D7...
+....D00DDD0D7...
+....DD0DD4DD7...
+....DDDD4DDD....
+....D4DDDDD4....
+....4DDDDD4D....
+....DD4D4DDD....
+....DDDDDDDD....
+.....DDDDDD.....
+................`],
   [ cake, bitmap`
 ................
 ................
@@ -406,7 +446,35 @@ z.qq.a...q.
 ....q.....q
 .q.....p@.f
 ...aqqqq.q.
-........qq.`
+........qq.`,
+  map`
+qqqqqqqqqqqqq
+q.....a.....p
+q.qqqqqqqqqzq
+q.....a...q.q
+q.qfqqqqq.q.q
+q.q.......q.q
+q.qfqqdqq.q.q
+q.q....a..q.q
+q.q.qqqqq.q.q
+q.q...af..q.q
+q.qqqqqqqqq@q
+q.a.........q
+qqqqqqqqqqqqq`,
+  map`
+p...........z
+..qqqqqqqqqf.
+qqq......aq..
+..q.......q..
+..q.......q..
+.fq.qqqqqqq..
+.............
+..qqqqqqqqq..
+q.qaf....aqq.
+q.q.......q.a
+q.q.....f.q..
+.@qqdqqqq.qf.
+.............`
 ]
 /*const grass = [bitmap`
 4444444444444444
@@ -460,13 +528,13 @@ afterInput(() => {
   let apples = getAll(apple)
   let friess = getAll(fries)
   let cakee = getFirst(cake)
-  let greeno = getFirst(green)
+  let bino = getFirst(bin)
   let dooro = getFirst(door)
   let counter = 0
   
-  if(tilesWith(green, cake).length >= 1){
+  if(tilesWith(bin, cake).length >= 1){
     cakee.remove()
-    greeno.remove()
+    bino.remove()
     counter = 1
     addText(`Door open!`,{x: 5, y: 6, color: color`H`})
   }
