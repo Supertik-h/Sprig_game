@@ -12,8 +12,8 @@ You can reset level by clicking 'j' or reset the whole game by clickin 'i'
 
 
 PLOT
-You decided to stay fit and eat clean. Unfortunately someone just have stolen your fruits.
-Try to find them, avoiding fast foods. Renember to get rid of the cake.
+You decided to stay fit and eat clean. Unfortunately someone just have stolen your apples.
+Try to find them, avoiding fast foods. Remember to get rid of the cake!
 */
 
 const player = "p"
@@ -37,6 +37,14 @@ const cake = "@"
 const lava = "!"
 const black = "8"
 
+const skrrr = tune`
+60.851926977687626: F5/60.851926977687626 + E5/60.851926977687626 + A4-60.851926977687626 + B4-60.851926977687626,
+60.851926977687626: C5/60.851926977687626 + E5/60.851926977687626 + F5/60.851926977687626 + D5/60.851926977687626 + A4-60.851926977687626,
+60.851926977687626: C5/60.851926977687626 + B4/60.851926977687626 + D5/60.851926977687626 + E5/60.851926977687626 + G4-60.851926977687626,
+60.851926977687626: B4/60.851926977687626 + C5/60.851926977687626 + F4-60.851926977687626 + E4-60.851926977687626 + G4-60.851926977687626,
+60.851926977687626: B4/60.851926977687626 + A4/60.851926977687626 + G4/60.851926977687626 + F4-60.851926977687626,
+60.851926977687626: B4/60.851926977687626 + A4/60.851926977687626 + G4/60.851926977687626,
+1582.1501014198782`
 const BackgroundSong = tune`
 340.90909090909093: A4~340.90909090909093 + C4^340.90909090909093 + D5/340.90909090909093,
 340.90909090909093: A4~340.90909090909093 + G4-340.90909090909093,
@@ -530,10 +538,10 @@ q.q.....f.q..
   map`
 pq......zq...
 .q.q.q.q.q.q.
-.q...q.q.q.q.
+.q.f.q.q.q.q.
 .q.q.q.q.q.q.
 .qaq.q.q...qa
-.q.q..fq.qqdq
+.q.q.f.q.qqdq
 ...q.q.q.q...
 .q.q.q.q.q...
 .q.q.q.q.q.q.
@@ -557,24 +565,33 @@ pq......zq...
 .a..........f`,
   map`
 .................
-s!!!.qqqqqqq.!!!s
+a!!!.qqqqqqq.!!!a
 .!!.....z@....!!.
 .!...qqqqqqq...!.
 ....qqqqqqqqq....
 .q..qq!!q!!qq..q.
 .q.qq!!!q!!!qq.q.
 .q.qq!!qqq!!qq.q.
-.qsqqqqqqqqqqqsq.
+.qaqqqqqqqqqqqaq.
 .q..qqqq!qqqq..q.
 .q..qqqqqqqqq..q.
 .q....q!q!q....q.
 ......q!!!q......
-.!......s......!.
+.!......a......!.
 .!!.....p.....!!.
 .!!!.qqqdqqq.!!!.
-s...............s`,
+a...............a`,
   map`
 8`,
+  map`
+!!!!!!!!!
+!aaaaaaa!
+!aaaaaaa!
+!aaaaaaa!
+!aaaaaaa!
+!aaaaaaa!
+!aaapaaa!
+!!!!!!!!!`,
 ]
 /*const grass = [bitmap`
 4444444444444444
@@ -640,23 +657,33 @@ afterInput(() => {
     addText(`Door open!`,{x: 5, y: 6, color: color`H`})
   }
   if(counter == 1){
-    setSolids([wall, player, cake])
+    setSolids([wall, player, cake, lava])
   }
   if(tilesWith(player, door).length >= 1){
       playTune(welcome,1)
       levelNumber++
       setMap(levels[levelNumber])
       counter = 0
-      setSolids([wall, player, cake, door])
+      setSolids([wall, player, cake, door, lava])
+  }
+  if(tilesWith(player, lava).length >= 1){
+      playTune(skrrr, 1)
+      setMap(levels[level])
   }
   if(levelNumber == 9){
-    addText(`FINAL!!!`,{x: 5, y: 6, color: color`3`})
+    addText(`FINAL!!!`,{x: 7, y: 13, color: color`3`})
     
   }
-  if(levelNumber == 10){
+  if(levelNumber == 10 && score >= 38){
+      setMap(levels[levelNumber+1])
+  }else if(levelNumber == 10){
+    clearText()
     addText(`Thanks for \n playing!`,{x: 5, y: 6, color: color`2`})
-    
+    addText(`You scored \n ${score}`,{x: 5, y: 8, color: color`2`})
+     
   }
+      
+  
   
   for(let i = 0; i < apples.length; i++){
     if(character.x === apples[i].x && character.y === apples[i].y){
