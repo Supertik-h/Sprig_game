@@ -8,12 +8,13 @@
 
 RULES
 You can move using 'WSAD'
-You can reset level by clicking 'j' or reset the whole game by clickin 'i'
+You can reset the level by clicking 'j' or reset the whole game by clicking 'i'.
+After the end of the game (if you have been in the room that is full of apples), you can click 'j' to see the end screen.
 
 
 PLOT
-You decided to stay fit and eat clean. Unfortunately someone just have stolen your apples.
-Try to find them, avoiding fast foods. Remember to get rid of the cake!
+You decided to stay fit and eat clean. Unfortunately, someone has just stolen your apples.
+Try to find them, avoiding fast food. Remember to get rid of the cake!
 */
 
 const player = "p"
@@ -99,7 +100,7 @@ const welcome = tune`
 98.36065573770492: F4~98.36065573770492 + G4^98.36065573770492 + A4-98.36065573770492,
 2852.4590163934427`
 
-/*playTune(BackgroundSong, Infinity)*/
+playTune(BackgroundSong, Infinity)
 
 setLegend(
   [ player, bitmap`
@@ -592,6 +593,10 @@ a...............a`,
 !aaaaaaa!
 !aaapaaa!
 !!!!!!!!!`,
+  map`
+888
+888
+888`,
 ]
 /*const grass = [bitmap`
 4444444444444444
@@ -676,10 +681,17 @@ afterInput(() => {
   }
   if(levelNumber == 10 && score >= 38){
       setMap(levels[levelNumber+1])
+      addText(`Thanks for \n playing!`,{x: 5, y: 6, color: color`0`})
+      if(score >= 100){
+        addText(`Thanks for \n playing!`,{x: 5, y: 6, color: color`2`})
+        addText(`You scored ${score}`,{x: 4, y: 8, color: color`2`})
+        setMap(levels[levelNumber])
+        
+      }
   }else if(levelNumber == 10){
     clearText()
     addText(`Thanks for \n playing!`,{x: 5, y: 6, color: color`2`})
-    addText(`You scored \n ${score}`,{x: 5, y: 8, color: color`2`})
+    addText(`You scored ${score}`,{x: 4, y: 8, color: color`2`})
      
   }
       
